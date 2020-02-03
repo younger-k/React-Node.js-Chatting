@@ -11,8 +11,10 @@ const io = socketio.listen(server);
 
 io.on('connection', (socket) => {
   console.log('a user connected');
-  socket.on('init', (data) => {
-    console.log(data.name);
-    socket.emit('welcome', `hello! ${data.name} your socket id is ${socket.id}`);
+
+  socket.on('sendmsg', (data) => {
+    const {nickname, msg} = data
+    io.emit('receivemsg', `${nickname} : ${msg}`);
   })
+
 })
