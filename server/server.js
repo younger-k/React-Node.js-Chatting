@@ -16,6 +16,3 @@ io.on('connection', (socket) => {
     socket.emit('welcome', `hello! ${data.name} your socket id is ${socket.id}`);
   })
 })
-
-
-module.exports = app;
