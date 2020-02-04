@@ -1,34 +1,21 @@
 import React from 'react';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+
 import CreateUser from './components/CreateUser';
 import Chatting from './components/Chatting';
+import List from './components/List';
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isCreated: false,
-      nickname: undefined
-    }
-  }
-
-  handleCreateUser = (e) => {
-    e.preventDefault();
-    const _nickname = e.target.nickname.value;
-    
-    this.setState({
-      isCreated: true,
-      nickname: _nickname
-    })
-  }
-
   render() {
-    const {isCreated, nickname} = this.state;
-    
     return(
       <div className="App">
-        <CreateUser handleSubmit={this.handleCreateUser}/>
-        {isCreated && <Chatting nickname={nickname}/>}
+        <Router>
+          <CreateUser handleSubmit={this.handleCreateUser}/>
+          <Switch>
+            <Route path='/list' component={List} />
+            <Route path='/chat/:seq' component={Chatting} />
+          </Switch>
+        </Router>
       </div>
     )
   }

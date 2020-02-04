@@ -3,19 +3,29 @@ import socketio from 'socket.io-client';
 const socket = socketio.connect('http://localhost:4000');
 
 class Chatting extends React.Component {
+  constructor(props) {
+    super(props);
+    const {seq} = this.props.match.params;
+    socket.emit('join', `room${seq}`);
+  }
+  
   handleSendMessage = (e) => {
     e.preventDefault();
     
+    const {seq} = this.props.match.params;
     socket.emit('sendmsg',
       {
-        nickname: this.props.nickname,
+        room_name: `room${seq}`,
+        nickname: this.props.location.state.nickname,
         msg: e.target.msg.value
       }
     )
+
+    e.target.msg.value = '';
   }
   
   handleRecvMessage = () => {
-    socket.on('receivemsg', (msg) => {
+    socket.on('sendmsg', (msg) => {
       let el_p = document.createElement('p');
       el_p.innerHTML = msg;
       
